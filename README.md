@@ -25,7 +25,7 @@ ReAct-паттерн:
 ## Как запустить
 
 1. Развернуть n8n (Railway / Render / self-hosted)
-2. Импортировать `workflow.json`
+2. Импортировать `ai-agent-kresi4ka.json`
 3. Создать credentials:
    - Groq API key: console.groq.com
    - Tavily API key: tavily.com
