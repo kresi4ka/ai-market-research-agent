@@ -32,11 +32,6 @@ ReAct-паттерн:
 4. Заменить `YOUR_TAVILY_API_KEY` в HTTP Request ноде на свой ключ
 5. Открыть Chat и задать тему
 
-## Скриншоты
-
-![Workflow](screenshot-workflow.png)
-![Execution](screenshot-execution.png)
-
 ## Примеры запросов
 
 - `Обзор Evolution AI Factory от Cloud.ru`
