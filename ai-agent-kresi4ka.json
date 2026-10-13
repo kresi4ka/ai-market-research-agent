@@ -1,0 +1,128 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [0, 0],
+      "id": "a2a4ad20-8caf-403f-9da8-0b2d087cafeb",
+      "name": "When chat message received",
+      "webhookId": "d29f391f-5ef0-4f47-9a8b-3b07a683b9fa"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Ты — ресёрчер AI-рынка России. По запросу: 1) сделай максимум 2 поиска через инструмент web_search, 2) собери отчёт на русском. Формат: Резюме / Игроки и продукты / Тренды / Источники. Простой язык, без воды."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [224, 0],
+      "id": "7945bdd5-5dad-4558-adca-cfd70662cd9e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3.8-27b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [96, 208],
+      "id": "65cd8bc8-162f-4af1-bf2c-16623e587f08",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "aXyDpWwpfHNP1SzQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [240, 208],
+      "id": "f8093fa2-eabe-4d98-9ea3-cc79c40c4061",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"api_key\": \"YOUR_TAVILY_API_KEY\",\n  \"query\": \"{ $fromAI('query', 'search query', 'string') }\",\n  \"max_results\": 1,\n  \"search_depth\": \"basic\",\n  \"include_answer\": true,\n  \"include_raw_content\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.5,
+      "position": [416, 160],
+      "id": "85120dfc-11b3-439c-814e-264c32c2bb7c",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "269d0d0e-3eb7-447b-ac16-dc073c1d8eb0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  },
+  "nodeGroups": [],
+  "id": "HQyHbT5Kl4RkYIOk",
+  "tags": []
+}
